@@ -2,6 +2,7 @@
 
 namespace DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields;
 
+use DigitalNature\Utilities\Config\Setting;
 use DigitalNature\Utilities\Config\SettingField;
 
 // Exit if accessed directly.
@@ -37,11 +38,13 @@ class KlaviyoApiPublicKeyField extends SettingField
      * Validates that the public API key is a 6 char alphanumeric string
      *
      * @param array $submitted
+     * @param Setting $setting
      * @return bool
      */
-    public static function is_valid(array $submitted): bool
+    public static function is_valid(array $submitted, Setting $setting): bool
     {
         if (!preg_match( '/^[a-z0-9]{6}$/i', $submitted[static::get_field_name()])) {
+            $setting->add_field_error(self::get_field_title() . ' must be a 6 character alphanumeric string');
             return false;
         }
 

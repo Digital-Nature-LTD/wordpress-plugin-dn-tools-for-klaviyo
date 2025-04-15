@@ -9,6 +9,7 @@ use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\KlaviyoApiSetting;
 use DigitalNature\ToolsForKlaviyo\Config\PluginConfig;
 use DigitalNature\Utilities\Admin\Menu as DigitalNatureAdminMenu;
 use DigitalNature\ToolsForKlaviyo\Common\Users\Capabilities\DigitalNatureToolsForKlaviyoSettingsCapability;
+use DigitalNature\Utilities\Helpers\OptionHelper;
 use DigitalNature\WordPressUtilities\Helpers\TemplateHelper;
 
 class Menu
@@ -31,8 +32,8 @@ class Menu
             DigitalNatureAdminMenu::DIGITAL_NATURE_MENU_SLUG,
             'Digital Nature - Tools for Klaviyo',
             'Tools for Klaviyo',
-            DigitalNatureToolsForKlaviyoSettingsCapability::get_capability_name(), // capability
-            $klaviyoApiSetting->get_setting_page_slug(), // menu slug
+            DigitalNatureToolsForKlaviyoSettingsCapability::get_capability_name(),
+            $klaviyoApiSetting->get_setting_page_slug(),
             [ $this, 'dn_tools_for_klaviyo_settings_view' ],
         );
     }
@@ -42,13 +43,7 @@ class Menu
      */
     public function dn_tools_for_klaviyo_settings_view()
     {
-        TemplateHelper::render(
-            PluginConfig::get_plugin_name() . '/admin/configure.php',
-            [
-                'setting' => new KlaviyoApiSetting()
-            ],
-            trailingslashit(PluginConfig::get_plugin_dir() . '/templates')
-        );
+        $setting = new KlaviyoApiSetting();
+        OptionHelper::render_configuration_page($setting);
     }
-
 }

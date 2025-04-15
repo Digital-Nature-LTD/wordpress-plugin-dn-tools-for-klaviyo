@@ -2,6 +2,8 @@
 
 namespace DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields;
 
+use Cassandra\Set;
+use DigitalNature\Utilities\Config\Setting;
 use DigitalNature\Utilities\Config\SettingField;
 
 // Exit if accessed directly.
@@ -35,9 +37,10 @@ class KlaviyoApiEventPrefixField extends SettingField
 
     /**
      * @param array $submitted
+     * @param Setting $setting
      * @return bool
      */
-    public static function is_valid(array $submitted): bool
+    public static function is_valid(array $submitted, Setting $setting): bool
     {
         return true;
     }
