@@ -88,6 +88,6 @@ class KlaviyoApiSetting extends Setting
      */
     public function get_section_content(): string
     {
-        return '<p>Please fill in your API credentials below, you can <a target="_blank" href="https://www.klaviyo.com/settings/account/api-keys">find the details in your Klaviyo account</a></p>';
+        return '<p>Please fill in your API credentials, you can <a target="_blank" href="https://www.klaviyo.com/settings/account/api-keys">find the details in your Klaviyo account</a></p>';
     }
 }

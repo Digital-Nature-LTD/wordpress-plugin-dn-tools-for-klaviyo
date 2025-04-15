@@ -35,8 +35,8 @@ class Includes {
      * @return	void
      */
     public function enqueue_backend_scripts_and_styles() {
-        wp_enqueue_style( 'dn-tools-for-klaviyo-admin-styles', PluginConfig::get_plugin_url() . 'assets/admin/css/dn-tools-for-klaviyo-admin.css', [], DIGITAL_NATURE_TOOLS_FOR_KLAVIYO_VERSION, 'all' );
-        wp_enqueue_script( 'dn-tools-for-klaviyo-admin-script', PluginConfig::get_plugin_url() . 'assets/admin/js/dn-tools-for-klaviyo-admin.js', [], DIGITAL_NATURE_TOOLS_FOR_KLAVIYO_VERSION, 'all' );
+        wp_enqueue_style( 'dn-tools-for-klaviyo-admin-styles', PluginConfig::get_plugin_url() . 'assets/admin/css/dn-tools-for-klaviyo-admin.css', [], PluginConfig::get_plugin_version(), 'all' );
+        wp_enqueue_script( 'dn-tools-for-klaviyo-admin-script', PluginConfig::get_plugin_url() . 'assets/admin/js/dn-tools-for-klaviyo-admin.js', [], PluginConfig::get_plugin_version(), 'all' );
     }
 
     /**
