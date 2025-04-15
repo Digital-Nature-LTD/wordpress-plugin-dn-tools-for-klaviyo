@@ -2,7 +2,6 @@
 
 namespace DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields;
 
-use Cassandra\Set;
 use DigitalNature\Utilities\Config\Setting;
 use DigitalNature\Utilities\Config\SettingField;
 

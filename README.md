@@ -6,7 +6,12 @@ Requires the [Digital Nature Utilities](https://github.com/Digital-Nature-LTD/wo
 
 
 ## Configuration
+In order to use the Klaviyo integration you must fill in your API credentials, you can do this in the "Digital Nature > Tools for Klaviyo" admin area.
 
+### Event prefix
+Events can be automatically prefixed with a string of your choice.
+
+*Example: You set a prefix of "Yo! " and trigger an event "My event name" - the event will be tracked in Klaviyo as "Yo! My event name"* 
 
 ## Helpers
 ### KlaviyoEventHelper
@@ -77,15 +82,19 @@ Additional methods are provided to opt in or out of marketing, and to check curr
 
 use DigitalNature\ToolsForKlaviyo\Helpers\KlaviyoProfileHelper;
 
+/** @var array|null $profile */
 $profile = KlaviyoProfileHelper::get_profile_by_email($user->user_email);
 
 /** @var bool $neverSubscribed */
 $neverSubscribed = KlaviyoProfileHelper::has_never_subscribed_to_email_marketing($profile);
-
-has_opted_in_to_email_marketing
-has_opted_out_of_email_marketing
-opt_in
-opt_out
+/** @var bool $hasOptedIn */
+$hasOptedIn = KlaviyoProfileHelper::has_opted_in_to_email_marketing($profile);
+/** @var bool $hasOptedOut */
+$hasOptedOut = KlaviyoProfileHelper::has_opted_out_of_email_marketing($profile);
+/** @var bool $optedIn */
+$optedIn = KlaviyoProfileHelper::opt_in($profile);
+/** @var bool $optedOut */
+$optedOut = KlaviyoProfileHelper::opt_out($profile);
 ```
 
 
