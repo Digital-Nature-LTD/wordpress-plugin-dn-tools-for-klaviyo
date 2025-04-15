@@ -14,5 +14,7 @@
             "email": "hello@digital-nature.co.uk"
         }
     ],
-    "require": {}
+    "require": {
+        "klaviyo/api": "^13.0"
+    }
 }

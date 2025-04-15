@@ -2,10 +2,10 @@
 
 namespace DigitalNature\ToolsForKlaviyo\Admin;
 
-// Exit if accessed directly.
 use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\KlaviyoApiSetting;
 use DigitalNature\ToolsForKlaviyo\Config\PluginConfig;
 
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Includes {
@@ -18,7 +18,8 @@ class Includes {
         add_action('admin_init', [$this, 'register_settings'], 10);
 
         // construct any admin classes here
-         new \DigitalNature\ToolsForKlaviyo\Admin\Menu();
+        new \DigitalNature\ToolsForKlaviyo\Admin\Menu();
+        new \DigitalNature\ToolsForKlaviyo\Admin\PluginActionLinks();
 
         // SHORTCODES
         // new \DigitalNature\ToolsForKlaviyo\Shortcodes\YourClass();

@@ -5,7 +5,6 @@ namespace DigitalNature\ToolsForKlaviyo\Admin;
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-use DigitalNature\ToolsForKlaviyo\Config\Settings;
 use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\KlaviyoApiSetting;
 use DigitalNature\ToolsForKlaviyo\Config\PluginConfig;
 use DigitalNature\Utilities\Admin\Menu as DigitalNatureAdminMenu;
@@ -36,9 +35,6 @@ class Menu
             $klaviyoApiSetting->get_setting_page(),
             [ $this, 'dn_tools_for_klaviyo_settings_view' ],
         );
-//
-//        $role = get_role('administrator');
-//        $role->add_cap(DigitalNatureToolsForKlaviyoSettingsCapability::get_capability_name(), true);
     }
 
     /**

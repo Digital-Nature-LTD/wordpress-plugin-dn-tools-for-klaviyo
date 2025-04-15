@@ -2,7 +2,8 @@
 
 namespace DigitalNature\ToolsForKlaviyo\Helpers;
 
-use DigitalNature\ToolsForKlaviyo\Config\Settings;
+use DigitalNature\ToolsForKlaviyo\Config\PluginConfig;
+use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\KlaviyoApiSetting;
 use Exception;
 use KlaviyoAPI\KlaviyoAPI;
 
@@ -17,23 +18,23 @@ class KlaviyoEventHelper
     public static function create(string $event, string $email, array $data): bool
     {
         // allow this to be turned off programmatically
-        if (!apply_filters('klaviyo_custom_events_and_tracking_do_send', true, $event)) {
+        if (apply_filters('dn_tools_for_klaviyo_is_sandbox', false, $event)) {
             return false;
         }
 
-        $options = get_option(Settings::API_SETTINGS_OPTIONS_NAME);
+        $options = self::get_options();
 
         if (!isset($options['api_key_private']) || !$options['api_key_private']) {
-            error_log(KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_FRIENDLY_NAME . " - Cannot track, Private API Key not set");
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot track, Private API Key not set");
             return false;
         }
 
         if (!isset($options['api_key_public']) || !$options['api_key_public']) {
-            error_log(KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_FRIENDLY_NAME . " - Cannot track, Public API Key not set");
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot track, Public API Key not set");
             return false;
         }
 
-        $eventPrefix = apply_filters('klaviyo_custom_events_and_tracking_event_prefix', '');
+        $eventPrefix = apply_filters('dn_tools_for_klaviyo_event_prefix', '');
 
         try {
             $client = new KlaviyoAPI(
@@ -73,10 +74,19 @@ class KlaviyoEventHelper
                 ],
             );
         } catch (Exception $e) {
-            error_log(KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_FRIENDLY_NAME . " - Error when tracking, data: " . json_encode($data) . ' with error: ' . $e->getCode() . ' ' . $e->getMessage());
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Error when tracking, data: " . json_encode($data) . ' with error: ' . $e->getCode() . ' ' . $e->getMessage());
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * @return false|mixed|null
+     */
+    private static function get_options()
+    {
+        $settings = new KlaviyoApiSetting();
+        return get_option($settings->get_option_name());
     }
 }

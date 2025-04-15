@@ -3,6 +3,8 @@
 namespace DigitalNature\ToolsForKlaviyo\Frontend;
 
 // Exit if accessed directly.
+use DigitalNature\ToolsForKlaviyo\Config\PluginConfig;
+
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Includes {
@@ -30,7 +32,7 @@ class Includes {
      * @return	void
      */
     public function enqueue_frontend_scripts_and_styles() {
-        wp_enqueue_style( 'klaviyo-custom-events-and-tracking-frontend-styles', KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_PLUGIN_URL . 'assets/frontend/css/frontend-styles.css', [], KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_VERSION, 'all' );
-        wp_enqueue_script( 'klaviyo-custom-events-and-tracking-frontend-script', KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_PLUGIN_URL . 'assets/frontend/js/frontend-script.js', [], KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_VERSION, 'all' );
+        wp_enqueue_style( 'klaviyo-custom-events-and-tracking-frontend-styles', PluginConfig::get_plugin_url() . 'assets/frontend/css/frontend-styles.css', [], PluginConfig::get_plugin_version(), 'all' );
+        wp_enqueue_script( 'klaviyo-custom-events-and-tracking-frontend-script', PluginConfig::get_plugin_url() . 'assets/frontend/js/frontend-script.js', [], PluginConfig::get_plugin_version(), 'all' );
     }
 }

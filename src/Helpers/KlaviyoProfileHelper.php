@@ -2,7 +2,8 @@
 
 namespace DigitalNature\ToolsForKlaviyo\Helpers;
 
-use DigitalNature\ToolsForKlaviyo\Config\Settings;
+use DigitalNature\ToolsForKlaviyo\Config\PluginConfig;
+use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\KlaviyoApiSetting;
 use Exception;
 use KlaviyoAPI\KlaviyoAPI;
 
@@ -22,19 +23,19 @@ class KlaviyoProfileHelper
     public static function createOrUpdate(string $email, array $data): bool
     {
         // allow this to be turned off programmatically
-        if (!apply_filters('klaviyo_custom_events_and_tracking_do_send', true)) {
+        if (apply_filters('dn_tools_for_klaviyo_is_sandbox', false)) {
             return false;
         }
 
-        $options = get_option(Settings::API_SETTINGS_OPTIONS_NAME);
+        $options = self::get_options();
 
         if (!isset($options['api_key_private']) || !$options['api_key_private']) {
-            error_log(KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_FRIENDLY_NAME . " - Cannot identify, Private API Key not set");
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot identify, Private API Key not set");
             return false;
         }
 
         if (!isset($options['api_key_public']) || !$options['api_key_public']) {
-            error_log(KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_FRIENDLY_NAME . " - Cannot identify, Public API Key not set");
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot identify, Public API Key not set");
             return false;
         }
 
@@ -61,7 +62,7 @@ class KlaviyoProfileHelper
                 ],
             );
         } catch (Exception $e) {
-            error_log(KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_FRIENDLY_NAME . " - Error when identify, data: " . json_encode($data) . ' with error: ' . $e->getCode() . ' ' . $e->getMessage());
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Error when identify, data: " . json_encode($data) . ' with error: ' . $e->getCode() . ' ' . $e->getMessage());
             return false;
         }
 
@@ -77,15 +78,15 @@ class KlaviyoProfileHelper
      */
     public static function get_profile(array $additionalFields = [], array $fields = [], string $filter = '', bool $returnPaginationMetadata = false): ?array
     {
-        $options = get_option(Settings::API_SETTINGS_OPTIONS_NAME);
+        $options = self::get_options();
 
         if (!isset($options['api_key_private']) || !$options['api_key_private']) {
-            error_log(KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_FRIENDLY_NAME . " - Cannot identify, Private API Key not set");
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot identify, Private API Key not set");
             return null;
         }
 
         if (!isset($options['api_key_public']) || !$options['api_key_public']) {
-            error_log(KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_FRIENDLY_NAME . " - Cannot identify, Public API Key not set");
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot identify, Public API Key not set");
             return null;
         }
 
@@ -118,7 +119,7 @@ class KlaviyoProfileHelper
             }
 
         } catch (Exception $e) {
-            error_log(KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_FRIENDLY_NAME . " - Error when getting profile with error: {$e->getCode()} {$e->getMessage()}");
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Error when getting profile with error: {$e->getCode()} {$e->getMessage()}");
             return null;
         }
 
@@ -213,19 +214,19 @@ class KlaviyoProfileHelper
     public static function opt_in(string $email): bool
     {
         // allow this to be turned off programmatically
-        if (!apply_filters('klaviyo_custom_events_and_tracking_do_send', true)) {
+        if (apply_filters('dn_tools_for_klaviyo_is_sandbox', false)) {
             return false;
         }
 
-        $options = get_option(Settings::API_SETTINGS_OPTIONS_NAME);
+        $options = self::get_options();
 
         if (!isset($options['api_key_private']) || !$options['api_key_private']) {
-            error_log(KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_FRIENDLY_NAME . " - Cannot identify, Private API Key not set");
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot identify, Private API Key not set");
             return false;
         }
 
         if (!isset($options['api_key_public']) || !$options['api_key_public']) {
-            error_log(KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_FRIENDLY_NAME . " - Cannot identify, Public API Key not set");
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot identify, Public API Key not set");
             return false;
         }
 
@@ -267,7 +268,7 @@ class KlaviyoProfileHelper
                 ],
             );
         } catch (Exception $e) {
-            error_log(KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_FRIENDLY_NAME . " - Error when subscribing profile '{$email}' with error: {$e->getCode()} {$e->getMessage()}");
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Error when subscribing profile '{$email}' with error: {$e->getCode()} {$e->getMessage()}");
             return false;
         }
 
@@ -284,19 +285,19 @@ class KlaviyoProfileHelper
     public static function opt_out(string $email): bool
     {
         // allow this to be turned off programmatically
-        if (!apply_filters('klaviyo_custom_events_and_tracking_do_send', true)) {
+        if (apply_filters('dn_tools_for_klaviyo_is_sandbox', false)) {
             return false;
         }
 
-        $options = get_option(Settings::API_SETTINGS_OPTIONS_NAME);
+        $options = self::get_options();
 
         if (!isset($options['api_key_private']) || !$options['api_key_private']) {
-            error_log(KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_FRIENDLY_NAME . " - Cannot identify, Private API Key not set");
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot identify, Private API Key not set");
             return false;
         }
 
         if (!isset($options['api_key_public']) || !$options['api_key_public']) {
-            error_log(KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_FRIENDLY_NAME . " - Cannot identify, Public API Key not set");
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot identify, Public API Key not set");
             return false;
         }
 
@@ -338,11 +339,20 @@ class KlaviyoProfileHelper
                 ],
             );
         } catch (Exception $e) {
-            error_log(KLAVIYO_CUSTOM_EVENTS_AND_TRACKING_FRIENDLY_NAME . " - Error when unsubscribing profile '{$email}' with error: {$e->getCode()} {$e->getMessage()}");
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Error when unsubscribing profile '{$email}' with error: {$e->getCode()} {$e->getMessage()}");
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * @return false|mixed|null
+     */
+    private static function get_options()
+    {
+        $settings = new KlaviyoApiSetting();
+        return get_option($settings->get_option_name());
     }
 
 }
