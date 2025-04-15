@@ -2,8 +2,10 @@
 
 namespace DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi;
 
+use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiEventPrefixField;
 use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiPrivateKeyField;
 use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiPublicKeyField;
+use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiUserAgentSuffixField;
 use DigitalNature\Utilities\Config\Setting;
 use DigitalNature\Utilities\Config\SettingField;
 
@@ -15,9 +17,9 @@ class KlaviyoApiSetting extends Setting
     /**
      * @return string
      */
-    public function get_setting_page(): string
+    public function get_setting_page_slug(): string
     {
-        return 'dn_tools_for_klaviyo';
+        return 'digital-nature/tools-for-klaviyo';
     }
 
     /**
@@ -45,6 +47,14 @@ class KlaviyoApiSetting extends Setting
     }
 
     /**
+     * @return string
+     */
+    public function get_messages_slug(): string
+    {
+        return 'dn_tools_for_klaviyo_messages';
+    }
+
+    /**
      * @return SettingField[]
      */
     protected function get_fields(): array
@@ -52,6 +62,8 @@ class KlaviyoApiSetting extends Setting
         return [
             new KlaviyoApiPrivateKeyField($this),
             new KlaviyoApiPublicKeyField($this),
+            new KlaviyoApiUserAgentSuffixField($this),
+            new KlaviyoApiEventPrefixField($this),
         ];
     }
 
@@ -74,7 +86,7 @@ class KlaviyoApiSetting extends Setting
     /**
      * @return string
      */
-    protected function get_section_content(): string
+    public function get_section_content(): string
     {
         return '<p>Please fill in your API credentials below, you can <a target="_blank" href="https://www.klaviyo.com/account#api-keys-tab">find the details in your Klaviyo account</a></p>';
     }

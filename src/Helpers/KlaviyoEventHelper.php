@@ -3,9 +3,16 @@
 namespace DigitalNature\ToolsForKlaviyo\Helpers;
 
 use DigitalNature\ToolsForKlaviyo\Config\PluginConfig;
+use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiEventPrefixField;
+use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiPrivateKeyField;
+use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiPublicKeyField;
+use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiUserAgentSuffixField;
 use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\KlaviyoApiSetting;
 use Exception;
 use KlaviyoAPI\KlaviyoAPI;
+
+// Exit if accessed directly.
+if (!defined('ABSPATH')) exit;
 
 class KlaviyoEventHelper
 {
@@ -23,28 +30,31 @@ class KlaviyoEventHelper
         }
 
         $options = self::get_options();
+        $privateFieldValue = self::get_option_value($options, KlaviyoApiPrivateKeyField::get_field_id());
+        $publicFieldValue = self::get_option_value($options, KlaviyoApiPublicKeyField::get_field_id());
+        $userAgentSuffixFieldValue = self::get_option_value($options, KlaviyoApiUserAgentSuffixField::get_field_id());
+        $eventPrefixFieldValue = self::get_option_value($options, KlaviyoApiEventPrefixField::get_field_id());
 
-        if (!isset($options['api_key_private']) || !$options['api_key_private']) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot track, Private API Key not set");
+
+        if (empty($privateFieldValue)) {
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Private API Key not set");
             return false;
         }
 
-        if (!isset($options['api_key_public']) || !$options['api_key_public']) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot track, Public API Key not set");
+        if (empty($publicFieldValue)) {
+            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Public API Key not set");
             return false;
         }
-
-        $eventPrefix = apply_filters('dn_tools_for_klaviyo_event_prefix', '');
 
         try {
             $client = new KlaviyoAPI(
-                $options['api_key_private'],
+                $privateFieldValue,
                 3,
                 3,
                 [
                     'verify' => false
                 ],
-                "/KLIRA"
+                $userAgentSuffixFieldValue
             );
 
             $client->Events->createEvent(
@@ -57,7 +67,7 @@ class KlaviyoEventHelper
                                 'data' => [
                                     'type' => 'metric',
                                     'attributes' => [
-                                        'name' => ((empty($eventPrefix) ? '' : "$eventPrefix ") . $event)
+                                        'name' => ((empty($eventPrefixFieldValue) ? '' : "$eventPrefixFieldValue ") . $event)
                                     ],
                                 ]
                             ],
@@ -88,5 +98,19 @@ class KlaviyoEventHelper
     {
         $settings = new KlaviyoApiSetting();
         return get_option($settings->get_option_name());
+    }
+
+    /**
+     * @param $options
+     * @param $field
+     * @return null|mixed
+     */
+    private static function get_option_value($options, $field)
+    {
+        if (empty($options[$field])) {
+            return null;
+        }
+
+        return $options[$field];
     }
 }

@@ -7,14 +7,14 @@ use DigitalNature\Utilities\Config\SettingField;
 // Exit if accessed directly.
 if (!defined('ABSPATH')) exit;
 
-class KlaviyoApiPublicKeyField extends SettingField
+class KlaviyoApiUserAgentSuffixField extends SettingField
 {
     /**
      * @return string
      */
     public static function get_field_title(): string
     {
-        return 'API Key - Public';
+        return 'User agent suffix';
     }
 
     /**
@@ -22,7 +22,7 @@ class KlaviyoApiPublicKeyField extends SettingField
      */
     public static function get_field_name(): string
     {
-        return 'dn_tools_for_klaviyo_plugin_setting_api_key_public';
+        return 'dn_tools_for_klaviyo_plugin_setting_user_agent_suffix';
     }
 
     /**
@@ -30,18 +30,18 @@ class KlaviyoApiPublicKeyField extends SettingField
      */
     public static function get_field_id(): string
     {
-        return 'api_key_public';
+        return 'user_agent_suffix';
     }
 
     /**
-     * Validates that the public API key is a 6 char alphanumeric string
+     * Validates that the suffix is provided, starts with a slash and has at least one character
      *
      * @param array $submitted
      * @return bool
      */
     public static function is_valid(array $submitted): bool
     {
-        if (!preg_match( '/^[a-z0-9]{6}$/i', $submitted[static::get_field_name()])) {
+        if (!preg_match( '/^\/[a-zA-Z0-9]+$/i', $submitted[static::get_field_name()])) {
             return false;
         }
 

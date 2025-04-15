@@ -2,7 +2,6 @@
 
 namespace DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields;
 
-use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\KlaviyoApiSetting;
 use DigitalNature\Utilities\Config\SettingField;
 
 // Exit if accessed directly.
@@ -13,7 +12,7 @@ class KlaviyoApiPrivateKeyField extends SettingField
     /**
      * @return string
      */
-    public function get_field_title(): string
+    public static function get_field_title(): string
     {
         return 'API Key - Private';
     }
@@ -21,7 +20,7 @@ class KlaviyoApiPrivateKeyField extends SettingField
     /**
      * @return string
      */
-    public function get_field_name(): string
+    public static function get_field_name(): string
     {
         return 'dn_tools_for_klaviyo_plugin_setting_api_key_private';
     }
@@ -29,17 +28,9 @@ class KlaviyoApiPrivateKeyField extends SettingField
     /**
      * @return string
      */
-    public function get_field_id(): string
+    public static function get_field_id(): string
     {
         return 'api_key_private';
-    }
-
-    /**
-     * @return string
-     */
-    public function get_setting_class(): string
-    {
-        return KlaviyoApiSetting::class;
     }
 
     /**
@@ -48,9 +39,9 @@ class KlaviyoApiPrivateKeyField extends SettingField
      * @param array $submitted
      * @return bool
      */
-    public function is_valid(array $submitted): bool
+    public static function is_valid(array $submitted): bool
     {
-        if (!preg_match( '/^pk_[a-z0-9]{34}$/i', $submitted[$this->get_field_id()])) {
+        if (!preg_match( '/^pk_[a-z0-9]{34}$/i', $submitted[static::get_field_name()])) {
             return false;
         }
 

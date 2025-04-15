@@ -9,9 +9,14 @@ use DigitalNature\Utilities\Config\Setting;
 <form action="options.php" method="post">
 
     <?php
-    settings_fields($setting->get_option_name());
-    do_settings_sections($setting->get_setting_page());
-    ?>
+    // show error/update messages
+    settings_errors($setting->get_messages_slug());
 
-    <input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e( 'Save' ); ?>" />
+    // output security fields
+    settings_fields($setting->get_option_group());
+    // output setting sections and their fields
+    do_settings_sections($setting->get_option_group());
+    // output save settings button
+    submit_button( 'Save Settings' );
+    ?>
 </form>

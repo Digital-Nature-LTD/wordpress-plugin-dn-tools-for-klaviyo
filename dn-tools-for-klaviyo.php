@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 require_once plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 
 // bootstrap the plugin once the rest have loaded
-add_action('plugins_loaded', 'bootstrap_plugin_dn_tools_for_klaviyo');
+add_action('digital_nature_utilities_plugin_loaded', 'bootstrap_plugin_dn_tools_for_klaviyo');
 
 function bootstrap_plugin_dn_tools_for_klaviyo()
 {

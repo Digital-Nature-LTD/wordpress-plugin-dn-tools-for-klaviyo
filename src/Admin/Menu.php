@@ -31,8 +31,8 @@ class Menu
             DigitalNatureAdminMenu::DIGITAL_NATURE_MENU_SLUG,
             'Digital Nature - Tools for Klaviyo',
             'Tools for Klaviyo',
-            DigitalNatureToolsForKlaviyoSettingsCapability::get_capability_name(),
-            $klaviyoApiSetting->get_setting_page(),
+            DigitalNatureToolsForKlaviyoSettingsCapability::get_capability_name(), // capability
+            $klaviyoApiSetting->get_setting_page_slug(), // menu slug
             [ $this, 'dn_tools_for_klaviyo_settings_view' ],
         );
     }
