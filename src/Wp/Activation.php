@@ -61,6 +61,6 @@ class Activation
 
         echo "<div class='notice notice-error'><p>$message</p></div>";
 
-        @trigger_error(__($message, 'cln'), E_USER_ERROR);
+        @trigger_error(__($message, PluginConfig::get_plugin_text_domain()), E_USER_ERROR);
     }
 }

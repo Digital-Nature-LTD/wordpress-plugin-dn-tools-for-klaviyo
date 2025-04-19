@@ -2,9 +2,9 @@
 
 namespace DigitalNature\ToolsForKlaviyo\Common;
 
-// Exit if accessed directly.
 use DigitalNature\ToolsForKlaviyo\Common\Users\Roles\DigitalNatureToolsForKlaviyoManagerRole;
 
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Includes
@@ -27,7 +27,8 @@ class Includes
         // new \DigitalNature\ToolsForKlaviyo\Hooks\YourClass();
 
         // Late loading
-        add_action('plugins_loaded', [$this, 'create_instances_after_all_plugins_loaded']);
+        add_action('init', [$this, 'create_instances_late_loading']);
+        add_action('admin_init', [$this, 'create_instances_late_loading']);
     }
 
     /**
@@ -36,9 +37,9 @@ class Includes
      *
      * @return void
      */
-    public function create_instances_after_all_plugins_loaded()
+    public function create_instances_late_loading(): void
     {
-        // CONFIG
-        // new \DigitalNature\ToolsForKlaviyo\Config\YourClass();
+        // REST API
+        new \DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyoApiNamespace();
     }
 }

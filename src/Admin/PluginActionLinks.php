@@ -25,7 +25,7 @@ class PluginActionLinks
     {
         $klaviyoApiSetting = new KlaviyoApiSetting();
 
-        $links['configure'] = sprintf( '<a href="%s" title="Configure">%s</a>', '/wp-admin/admin.php?page=' . $klaviyoApiSetting->get_setting_page_slug(), __( 'Configure', PluginConfig::get_plugin_name() ) );
+        $links['configure'] = sprintf( '<a href="%s" title="Configure">%s</a>', '/wp-admin/admin.php?page=' . $klaviyoApiSetting->get_setting_page_slug(), __( 'Configure', PluginConfig::get_plugin_text_domain() ) );
 
         return $links;
     }

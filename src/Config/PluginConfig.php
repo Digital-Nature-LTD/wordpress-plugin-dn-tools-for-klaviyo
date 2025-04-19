@@ -32,4 +32,12 @@ class PluginConfig extends PluginConfiguration
     {
         return 'Digital Nature - Tools for Klaviyo';
     }
+
+    /**
+     * @return string
+     */
+    public static function get_plugin_text_domain(): string
+    {
+        return 'dn-tools-for-klaviyo';
+    }
 }

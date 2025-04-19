@@ -11,7 +11,9 @@ In order to use the Klaviyo integration you must fill in your API credentials, y
 ### Event prefix
 Events can be automatically prefixed with a string of your choice.
 
-*Example: You set a prefix of "Yo! " and trigger an event "My event name" - the event will be tracked in Klaviyo as "Yo! My event name"* 
+> Example: You set a prefix of "Yo!" and trigger an event "My event name" - the event will be tracked in Klaviyo as "Yo! My event name".
+> 
+> A space will be automatically added between your prefix and the event name. 
 
 ## Helpers
 ### KlaviyoEventHelper
