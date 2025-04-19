@@ -7,6 +7,7 @@ use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiPr
 use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiPublicKeyField;
 use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiUserAgentSuffixField;
 use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\KlaviyoApiSetting;
+use DigitalNature\WordPressUtilities\Helpers\LogHelper;
 use Exception;
 use KlaviyoAPI\KlaviyoAPI;
 
@@ -34,17 +35,17 @@ class KlaviyoProfileHelper
         }
 
         $options = self::get_options();
-        $privateFieldValue = self::get_option_value($options, KlaviyoApiPrivateKeyField::get_field_id());
-        $publicFieldValue = self::get_option_value($options, KlaviyoApiPublicKeyField::get_field_id());
-        $userAgentSuffixFieldValue = self::get_option_value($options, KlaviyoApiUserAgentSuffixField::get_field_id());
+        $privateFieldValue = self::get_option_value($options, KlaviyoApiPrivateKeyField::get_field_name());
+        $publicFieldValue = self::get_option_value($options, KlaviyoApiPublicKeyField::get_field_name());
+        $userAgentSuffixFieldValue = self::get_option_value($options, KlaviyoApiUserAgentSuffixField::get_field_name());
 
         if (empty($privateFieldValue)) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Private API Key not set");
+            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Private API Key not set");
             return false;
         }
 
         if (empty($publicFieldValue)) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Public API Key not set");
+            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Public API Key not set");
             return false;
         }
 
@@ -71,7 +72,7 @@ class KlaviyoProfileHelper
                 ],
             );
         } catch (Exception $e) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Error when identify, data: " . json_encode($data) . ' with error: ' . $e->getCode() . ' ' . $e->getMessage());
+            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Error when identify, data: " . json_encode($data) . ' with error: ' . $e->getCode() . ' ' . $e->getMessage());
             return false;
         }
 
@@ -93,12 +94,12 @@ class KlaviyoProfileHelper
         $userAgentSuffixFieldValue = self::get_option_value($options, KlaviyoApiUserAgentSuffixField::get_field_id());
 
         if (empty($privateFieldValue)) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Private API Key not set");
+            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Private API Key not set");
             return false;
         }
 
         if (empty($publicFieldValue)) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Public API Key not set");
+            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Public API Key not set");
             return false;
         }
 
@@ -131,7 +132,7 @@ class KlaviyoProfileHelper
             }
 
         } catch (Exception $e) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Error when getting profile with error: {$e->getCode()} {$e->getMessage()}");
+            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Error when getting profile with error: {$e->getCode()} {$e->getMessage()}");
             return null;
         }
 
@@ -236,12 +237,12 @@ class KlaviyoProfileHelper
         $userAgentSuffixFieldValue = self::get_option_value($options, KlaviyoApiUserAgentSuffixField::get_field_id());
 
         if (empty($privateFieldValue)) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Private API Key not set");
+            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Private API Key not set");
             return false;
         }
 
         if (empty($publicFieldValue)) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Public API Key not set");
+            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Public API Key not set");
             return false;
         }
 
@@ -283,7 +284,7 @@ class KlaviyoProfileHelper
                 ],
             );
         } catch (Exception $e) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Error when subscribing profile '{$email}' with error: {$e->getCode()} {$e->getMessage()}");
+            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Error when subscribing profile '{$email}' with error: {$e->getCode()} {$e->getMessage()}");
             return false;
         }
 
@@ -310,12 +311,12 @@ class KlaviyoProfileHelper
         $userAgentSuffixFieldValue = self::get_option_value($options, KlaviyoApiUserAgentSuffixField::get_field_id());
 
         if (empty($privateFieldValue)) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Private API Key not set");
+            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Private API Key not set");
             return false;
         }
 
         if (empty($publicFieldValue)) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Public API Key not set");
+            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Public API Key not set");
             return false;
         }
 
@@ -357,7 +358,7 @@ class KlaviyoProfileHelper
                 ],
             );
         } catch (Exception $e) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Error when unsubscribing profile '{$email}' with error: {$e->getCode()} {$e->getMessage()}");
+            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Error when unsubscribing profile '{$email}' with error: {$e->getCode()} {$e->getMessage()}");
             return false;
         }
 

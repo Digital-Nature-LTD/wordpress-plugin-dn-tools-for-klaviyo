@@ -8,6 +8,7 @@ use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiPr
 use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiPublicKeyField;
 use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiUserAgentSuffixField;
 use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\KlaviyoApiSetting;
+use DigitalNature\WordPressUtilities\Helpers\LogHelper;
 use Exception;
 use KlaviyoAPI\KlaviyoAPI;
 
@@ -30,19 +31,18 @@ class KlaviyoEventHelper
         }
 
         $options = self::get_options();
-        $privateFieldValue = self::get_option_value($options, KlaviyoApiPrivateKeyField::get_field_id());
-        $publicFieldValue = self::get_option_value($options, KlaviyoApiPublicKeyField::get_field_id());
-        $userAgentSuffixFieldValue = self::get_option_value($options, KlaviyoApiUserAgentSuffixField::get_field_id());
-        $eventPrefixFieldValue = self::get_option_value($options, KlaviyoApiEventPrefixField::get_field_id());
-
+        $privateFieldValue = self::get_option_value($options, KlaviyoApiPrivateKeyField::get_field_name());
+        $publicFieldValue = self::get_option_value($options, KlaviyoApiPublicKeyField::get_field_name());
+        $userAgentSuffixFieldValue = self::get_option_value($options, KlaviyoApiUserAgentSuffixField::get_field_name());
+        $eventPrefixFieldValue = self::get_option_value($options, KlaviyoApiEventPrefixField::get_field_name());
 
         if (empty($privateFieldValue)) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Private API Key not set");
+            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Private API Key not set");
             return false;
         }
 
         if (empty($publicFieldValue)) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Public API Key not set");
+            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Public API Key not set");
             return false;
         }
 
@@ -84,7 +84,7 @@ class KlaviyoEventHelper
                 ],
             );
         } catch (Exception $e) {
-            error_log(PluginConfig::get_plugin_friendly_name() . " - Error when tracking, data: " . json_encode($data) . ' with error: ' . $e->getCode() . ' ' . $e->getMessage());
+            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Error when tracking, data: " . json_encode($data) . ' with error: ' . $e->getCode() . ' ' . $e->getMessage());
             return false;
         }
 

@@ -11,7 +11,6 @@ use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Resource\Klaviyo
 use DigitalNature\Utilities\Wp\RestApi\RestController;
 use DigitalNature\Utilities\Wp\RestApi\RestControllerRoute;
 use DigitalNature\Utilities\Wp\RestApi\RestResource;
-use Exception;
 
 class KlaviyoEventsController extends RestController
 {
@@ -26,7 +25,7 @@ class KlaviyoEventsController extends RestController
     /**
      * @return KlaviyoEventResource
      */
-    public function get_resource(): RestResource
+    protected function get_resource(): RestResource
     {
         return new KlaviyoEventResource();
     }
@@ -34,24 +33,11 @@ class KlaviyoEventsController extends RestController
     /**
      * @return RestControllerRoute[]
      */
-    public function get_routes(): array
+    protected function get_routes(): array
     {
         return [
-            new KlaviyoEventsReadableRoute(),
-            new KlaviyoEventsCreatableRoute(),
+            new KlaviyoEventsReadableRoute($this),
+            new KlaviyoEventsCreatableRoute($this),
         ];
-    }
-
-    /**
-     * @return void
-     * @throws Exception
-     */
-    public function register_routes()
-    {
-        register_rest_route(
-            $this->namespace,
-            $this->build_route_url(),
-            $this->build_route_configuration(),
-        );
     }
 }

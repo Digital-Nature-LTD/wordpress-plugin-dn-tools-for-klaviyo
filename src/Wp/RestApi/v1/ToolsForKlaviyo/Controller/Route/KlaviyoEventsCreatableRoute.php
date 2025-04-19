@@ -5,7 +5,9 @@ namespace DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Controller
 // Exit if accessed directly.
 if (!defined('ABSPATH')) exit;
 
-use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Arg\KlaviyoUserEmailArg;
+use DigitalNature\ToolsForKlaviyo\Helpers\KlaviyoEventHelper;
+use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Arg\KlaviyoEventArg;
+use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Arg\KlaviyoEventDataArg;
 use DigitalNature\Utilities\Wp\RestApi\RestArg;
 use DigitalNature\Utilities\Wp\RestApi\RestControllerRoute;
 use WP_Error;
@@ -33,12 +35,28 @@ class KlaviyoEventsCreatableRoute extends RestControllerRoute
      */
     public function callback(WP_REST_Request $request)
     {
-        // Add a custom status code to the WP_REST_Response, if needed. I'm assuming default code is 200
-        //$response->set_status( 201 );
+        $user = wp_get_current_user();
 
-        return new WP_REST_Response([
-            'data' => 'goes here'
-        ]);
+        $args = $this->get_submitted_args($request);
+        $event = $args['event'];
+        $data = $args['event-data'];
+
+        $responseData = [
+            'email' => $user->user_email,
+            'event' => $event,
+            'data' => $data
+        ];
+
+        // create the event
+        if (KlaviyoEventHelper::create(
+            $event,
+            $user->user_email,
+            $data
+        )) {
+            return $this->send_single_record_response($responseData);
+        }
+
+        return new WP_Error('TFK0001', 'Could not create event', $responseData);
     }
 
     /**
@@ -57,10 +75,11 @@ class KlaviyoEventsCreatableRoute extends RestControllerRoute
     /**
      * @return RestArg[]
      */
-    public function args(): array
+    public function set_args(): array
     {
         return [
-            new KlaviyoUserEmailArg(true)
+            new KlaviyoEventArg(true),
+            new KlaviyoEventDataArg(false, []),
         ];
     }
 }

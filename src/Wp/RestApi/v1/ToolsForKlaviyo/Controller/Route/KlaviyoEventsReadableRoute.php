@@ -33,12 +33,14 @@ class KlaviyoEventsReadableRoute extends RestControllerRoute
      */
     public function callback(WP_REST_Request $request)
     {
-        // Add a custom status code to the WP_REST_Response, if needed. I'm assuming default code is 200
-        //$response->set_status( 201 );
+        $args = $this->get_submitted_args($request);
+        $email = $args['email'];
 
-        return new WP_REST_Response([
-            'data' => 'goes here'
-        ]);
+
+
+        $resource = $this->controller->resource;
+
+        return $resource->format_response(['uh' => 'oh']);
     }
 
     /**
@@ -57,7 +59,7 @@ class KlaviyoEventsReadableRoute extends RestControllerRoute
     /**
      * @return RestArg[]
      */
-    public function args(): array
+    public function set_args(): array
     {
         return [
             new KlaviyoUserEmailArg(true)
