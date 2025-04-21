@@ -48,6 +48,10 @@ class KlaviyoEventResource extends RestResource
             'data' => [
                 'description'  => esc_html__( 'The data attached to this event.', PluginConfig::get_plugin_text_domain()),
                 'type'         => 'array',
+            ],
+            'timestamp' => [
+                'description'  => esc_html__( 'The timestamp when this event occurred.', PluginConfig::get_plugin_text_domain()),
+                'type'         => 'int',
             ]
         ];
     }
@@ -59,9 +63,11 @@ class KlaviyoEventResource extends RestResource
     public function format_response(array $data): array
     {
         return array_filter([
+            'id' => $data['id'] ?? null,
             'email' => $data['email'] ?? null,
             'event' => $data['event'] ?? null,
-            'data' => $data['data'] ?? null
+            'data' => $data['data'] ?? null,
+            'timestamp' => $data['timestamp'] ?? null,
         ]);
     }
 }

@@ -2,19 +2,14 @@
 
 namespace DigitalNature\ToolsForKlaviyo\Helpers;
 
-use DigitalNature\ToolsForKlaviyo\Config\PluginConfig;
-use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiPrivateKeyField;
-use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiPublicKeyField;
-use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiUserAgentSuffixField;
-use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\KlaviyoApiSetting;
-use DigitalNature\WordPressUtilities\Helpers\LogHelper;
-use Exception;
-use KlaviyoAPI\KlaviyoAPI;
-
 // Exit if accessed directly.
 if (!defined('ABSPATH')) exit;
 
-class KlaviyoProfileHelper
+use DigitalNature\ToolsForKlaviyo\Config\PluginConfig;
+use DigitalNature\WordPressUtilities\Helpers\LogHelper;
+use Exception;
+
+class KlaviyoProfileHelper extends KlaviyoApiHelper
 {
     const CONSENT_NEVER_SUBSCRIBED = 'NEVER_SUBSCRIBED';
     const CONSENT_SUBSCRIBED = 'SUBSCRIBED';
@@ -34,31 +29,12 @@ class KlaviyoProfileHelper
             return false;
         }
 
-        $options = self::get_options();
-        $privateFieldValue = self::get_option_value($options, KlaviyoApiPrivateKeyField::get_field_name());
-        $publicFieldValue = self::get_option_value($options, KlaviyoApiPublicKeyField::get_field_name());
-        $userAgentSuffixFieldValue = self::get_option_value($options, KlaviyoApiUserAgentSuffixField::get_field_name());
-
-        if (empty($privateFieldValue)) {
-            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Private API Key not set");
-            return false;
-        }
-
-        if (empty($publicFieldValue)) {
-            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Public API Key not set");
-            return false;
-        }
-
         try {
-            $client = new KlaviyoAPI(
-                $privateFieldValue,
-                3,
-                3,
-                [
-                    'verify' => false
-                ],
-                $userAgentSuffixFieldValue
-            );
+            $client = self::get_client();
+
+            if (!$client) {
+                return false;
+            }
 
             $client->Profiles->createOrUpdateProfile(
                 [
@@ -88,31 +64,12 @@ class KlaviyoProfileHelper
      */
     public static function get_profile(array $additionalFields = [], array $fields = [], string $filter = '', bool $returnPaginationMetadata = false): ?array
     {
-        $options = self::get_options();
-        $privateFieldValue = self::get_option_value($options, KlaviyoApiPrivateKeyField::get_field_id());
-        $publicFieldValue = self::get_option_value($options, KlaviyoApiPublicKeyField::get_field_id());
-        $userAgentSuffixFieldValue = self::get_option_value($options, KlaviyoApiUserAgentSuffixField::get_field_id());
-
-        if (empty($privateFieldValue)) {
-            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Private API Key not set");
-            return false;
-        }
-
-        if (empty($publicFieldValue)) {
-            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Public API Key not set");
-            return false;
-        }
-
         try {
-            $client = new KlaviyoAPI(
-                $privateFieldValue,
-                3,
-                3,
-                [
-                    'verify' => false
-                ],
-                $userAgentSuffixFieldValue
-            );
+            $client = self::get_client();
+
+            if (!$client) {
+                return null;
+            }
 
             # $additional_fields_profile | string[]
             # $fields_profile | string[]
@@ -231,31 +188,12 @@ class KlaviyoProfileHelper
             return false;
         }
 
-        $options = self::get_options();
-        $privateFieldValue = self::get_option_value($options, KlaviyoApiPrivateKeyField::get_field_id());
-        $publicFieldValue = self::get_option_value($options, KlaviyoApiPublicKeyField::get_field_id());
-        $userAgentSuffixFieldValue = self::get_option_value($options, KlaviyoApiUserAgentSuffixField::get_field_id());
-
-        if (empty($privateFieldValue)) {
-            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Private API Key not set");
-            return false;
-        }
-
-        if (empty($publicFieldValue)) {
-            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Public API Key not set");
-            return false;
-        }
-
         try {
-            $client = new KlaviyoAPI(
-                $privateFieldValue,
-                3,
-                3,
-                [
-                    'verify' => false
-                ],
-                $userAgentSuffixFieldValue
-            );
+            $client = self::get_client();
+
+            if (!$client) {
+                return false;
+            }
 
             $client->Profiles->subscribeProfiles(
                 [
@@ -305,31 +243,12 @@ class KlaviyoProfileHelper
             return false;
         }
 
-        $options = self::get_options();
-        $privateFieldValue = self::get_option_value($options, KlaviyoApiPrivateKeyField::get_field_id());
-        $publicFieldValue = self::get_option_value($options, KlaviyoApiPublicKeyField::get_field_id());
-        $userAgentSuffixFieldValue = self::get_option_value($options, KlaviyoApiUserAgentSuffixField::get_field_id());
-
-        if (empty($privateFieldValue)) {
-            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Private API Key not set");
-            return false;
-        }
-
-        if (empty($publicFieldValue)) {
-            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Public API Key not set");
-            return false;
-        }
-
         try {
-            $client = new KlaviyoAPI(
-                $privateFieldValue,
-                3,
-                3,
-                [
-                    'verify' => false
-                ],
-                $userAgentSuffixFieldValue
-            );
+            $client = self::get_client();
+
+            if (!$client) {
+                return false;
+            }
 
             $client->Profiles->unsubscribeProfiles(
                 [
@@ -363,28 +282,5 @@ class KlaviyoProfileHelper
         }
 
         return true;
-    }
-
-    /**
-     * @return false|mixed|null
-     */
-    private static function get_options()
-    {
-        $settings = new KlaviyoApiSetting();
-        return get_option($settings->get_option_name());
-    }
-
-    /**
-     * @param $options
-     * @param $field
-     * @return null|mixed
-     */
-    private static function get_option_value($options, $field)
-    {
-        if (empty($options[$field])) {
-            return null;
-        }
-
-        return $options[$field];
     }
 }

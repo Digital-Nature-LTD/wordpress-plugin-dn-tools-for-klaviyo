@@ -2,20 +2,15 @@
 
 namespace DigitalNature\ToolsForKlaviyo\Helpers;
 
-use DigitalNature\ToolsForKlaviyo\Config\PluginConfig;
-use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiEventPrefixField;
-use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiPrivateKeyField;
-use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiPublicKeyField;
-use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiUserAgentSuffixField;
-use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\KlaviyoApiSetting;
-use DigitalNature\WordPressUtilities\Helpers\LogHelper;
-use Exception;
-use KlaviyoAPI\KlaviyoAPI;
-
 // Exit if accessed directly.
 if (!defined('ABSPATH')) exit;
 
-class KlaviyoEventHelper
+use DigitalNature\ToolsForKlaviyo\Config\PluginConfig;
+use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\Fields\KlaviyoApiEventPrefixField;
+use DigitalNature\WordPressUtilities\Helpers\LogHelper;
+use Exception;
+
+class KlaviyoEventHelper extends KlaviyoApiHelper
 {
     /**
      * @param string $event
@@ -30,32 +25,15 @@ class KlaviyoEventHelper
             return false;
         }
 
-        $options = self::get_options();
-        $privateFieldValue = self::get_option_value($options, KlaviyoApiPrivateKeyField::get_field_name());
-        $publicFieldValue = self::get_option_value($options, KlaviyoApiPublicKeyField::get_field_name());
-        $userAgentSuffixFieldValue = self::get_option_value($options, KlaviyoApiUserAgentSuffixField::get_field_name());
-        $eventPrefixFieldValue = self::get_option_value($options, KlaviyoApiEventPrefixField::get_field_name());
-
-        if (empty($privateFieldValue)) {
-            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Private API Key not set");
-            return false;
-        }
-
-        if (empty($publicFieldValue)) {
-            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Cannot make request, Public API Key not set");
-            return false;
-        }
-
         try {
-            $client = new KlaviyoAPI(
-                $privateFieldValue,
-                3,
-                3,
-                [
-                    'verify' => false
-                ],
-                $userAgentSuffixFieldValue
-            );
+            $client = self::get_client();
+
+            if (!$client) {
+                return false;
+            }
+
+            $options = self::get_options();
+            $eventPrefixFieldValue = self::get_option_value($options, KlaviyoApiEventPrefixField::get_field_name());
 
             $client->Events->createEvent(
                 [
@@ -91,26 +69,43 @@ class KlaviyoEventHelper
         return true;
     }
 
-    /**
-     * @return false|mixed|null
-     */
-    private static function get_options()
-    {
-        $settings = new KlaviyoApiSetting();
-        return get_option($settings->get_option_name());
-    }
 
     /**
-     * @param $options
-     * @param $field
-     * @return null|mixed
+     * @param string $profileId
+     * @param array|null $events
+     * @param array|null $metrics
+     * @param array|null $profiles
+     * @return array|null
      */
-    private static function get_option_value($options, $field)
+    public static function get_for_profile(string $profileId, array $events = null, array $metrics = null, array $profiles = null): ?array
     {
-        if (empty($options[$field])) {
+        // allow this to be turned off programmatically
+        if (apply_filters('dn_tools_for_klaviyo_is_sandbox', false, serialize($events))) {
             return null;
         }
 
-        return $options[$field];
+        try {
+            $client = self::get_client();
+
+            if (!$client) {
+                return null;
+            }
+
+            $eventsResponse = $client->Events->getEvents(
+                $events,
+                $metrics,
+                $profiles,
+                "equals(profile_id,\"$profileId\")",
+            );
+
+            if (empty($eventsResponse)) {
+                return null;
+            }
+        } catch (Exception $e) {
+            LogHelper::write(PluginConfig::get_plugin_friendly_name() . " - Error when getting events, with error: {$e->getCode()} {$e->getMessage()}");
+            return null;
+        }
+
+        return $eventsResponse;
     }
 }

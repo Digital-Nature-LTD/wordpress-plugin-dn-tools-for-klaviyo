@@ -5,9 +5,12 @@ namespace DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Controller
 // Exit if accessed directly.
 if (!defined('ABSPATH')) exit;
 
+use DigitalNature\ToolsForKlaviyo\Helpers\KlaviyoEventHelper;
+use DigitalNature\ToolsForKlaviyo\Helpers\UserHelper;
 use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Arg\KlaviyoUserEmailArg;
 use DigitalNature\Utilities\Wp\RestApi\RestArg;
 use DigitalNature\Utilities\Wp\RestApi\RestControllerRoute;
+use Exception;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -33,14 +36,34 @@ class KlaviyoEventsReadableRoute extends RestControllerRoute
      */
     public function callback(WP_REST_Request $request)
     {
-        $args = $this->get_submitted_args($request);
-        $email = $args['email'];
+        $user = wp_get_current_user();
 
+        // get the Klaviyo profile ID, error if we don't have one
+        try {
+            $profileId = UserHelper::get_klaviyo_profile_id($user);
+        } catch (Exception $e) {
+            return $this->send_error_response($e->getMessage(), 'get_klaviyo_profile_id');
+        }
 
+        // get the events
+        $events = KlaviyoEventHelper::get_for_profile(
+            $profileId,
+        );
 
-        $resource = $this->controller->resource;
+        // no events, send empty response
+        if (empty($events)) {
+            return $this->send_empty_response();
+        }
+        // add each event to the response
+        foreach ($events['data'] as $event) {
+            $this->add_response_data([
+                'id' => $event['id'] ?? null,
+                'data' => $event['attributes']['event_properties'] ?? null,
+                'timestamp' => $event['attributes']['timestamp'] ?? null,
+            ]);
+        }
 
-        return $resource->format_response(['uh' => 'oh']);
+        return $this->send_response();
     }
 
     /**
@@ -61,8 +84,6 @@ class KlaviyoEventsReadableRoute extends RestControllerRoute
      */
     public function set_args(): array
     {
-        return [
-            new KlaviyoUserEmailArg(true)
-        ];
+        return [];
     }
 }
