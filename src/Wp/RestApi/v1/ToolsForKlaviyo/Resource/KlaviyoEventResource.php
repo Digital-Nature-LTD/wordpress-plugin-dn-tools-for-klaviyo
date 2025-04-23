@@ -52,7 +52,11 @@ class KlaviyoEventResource extends RestResource
             'timestamp' => [
                 'description'  => esc_html__( 'The timestamp when this event occurred.', PluginConfig::get_plugin_text_domain()),
                 'type'         => 'int',
-            ]
+            ],
+            'metric' => [
+                'description'  => esc_html__( 'The name of the triggered event.', PluginConfig::get_plugin_text_domain()),
+                'type'         => 'string',
+            ],
         ];
     }
 
@@ -68,6 +72,7 @@ class KlaviyoEventResource extends RestResource
             'event' => $data['event'] ?? null,
             'data' => $data['data'] ?? null,
             'timestamp' => $data['timestamp'] ?? null,
+            'metric' => $data['metric'] ?? null,
         ]);
     }
 }

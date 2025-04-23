@@ -6,6 +6,8 @@ namespace DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Controller
 if (!defined('ABSPATH')) exit;
 
 use DigitalNature\ToolsForKlaviyo\Helpers\KlaviyoEventHelper;
+use DigitalNature\ToolsForKlaviyo\Helpers\KlaviyoIncludesHelper;
+use DigitalNature\ToolsForKlaviyo\Helpers\KlaviyoMetricHelper;
 use DigitalNature\ToolsForKlaviyo\Helpers\UserHelper;
 use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Arg\KlaviyoUserEmailArg;
 use DigitalNature\Utilities\Wp\RestApi\RestArg;
@@ -46,20 +48,32 @@ class KlaviyoEventsReadableRoute extends RestControllerRoute
         }
 
         // get the events
-        $events = KlaviyoEventHelper::get_for_profile(
+        $response = KlaviyoEventHelper::get_for_profile(
             $profileId,
+            null,
+            ['name'],
+            null,
+            ['metric']
         );
 
         // no events, send empty response
-        if (empty($events)) {
+        if (empty($response)) {
             return $this->send_empty_response();
         }
+
+        $included = $response['included'];
+
+        $metrics = KlaviyoIncludesHelper::get_metrics_from_includes($included);
+
         // add each event to the response
-        foreach ($events['data'] as $event) {
+        foreach ($response['data'] as $event) {
+            $metric = KlaviyoMetricHelper::get_metric_for_event($event, $metrics);
+
             $this->add_response_data([
                 'id' => $event['id'] ?? null,
                 'data' => $event['attributes']['event_properties'] ?? null,
                 'timestamp' => $event['attributes']['timestamp'] ?? null,
+                'metric' => $metric ?? null,
             ]);
         }
 
