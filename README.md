@@ -8,6 +8,8 @@ Requires the [Digital Nature Utilities](https://github.com/Digital-Nature-LTD/wo
 ## Configuration
 In order to use the Klaviyo integration you must fill in your API credentials, you can do this in the "Digital Nature > Tools for Klaviyo" admin area.
 
+Your permissions must include full access to "Events, Metrics, Profiles, Webhooks"
+
 ### Event prefix
 Events can be automatically prefixed with a string of your choice.
 
