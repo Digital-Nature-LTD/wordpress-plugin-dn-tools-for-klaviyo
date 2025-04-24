@@ -8,6 +8,9 @@ if (!defined('ABSPATH')) exit;
 use DigitalNature\ToolsForKlaviyo\Helpers\KlaviyoEventHelper;
 use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Arg\KlaviyoEventArg;
 use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Arg\KlaviyoEventDataArg;
+use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Resource\KlaviyoEventResource;
+use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Resource\Model\KlaviyoEventResourceModel;
+use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Resource\Model\KlaviyoMetricResourceModel;
 use DigitalNature\Utilities\Wp\RestApi\RestArg;
 use DigitalNature\Utilities\Wp\RestApi\RestControllerRoute;
 use WP_Error;
@@ -41,11 +44,14 @@ class KlaviyoEventsCreatableRoute extends RestControllerRoute
         $event = $args['event'];
         $data = $args['event-data'];
 
-        $responseData = [
-            'email' => $user->user_email,
-            'event' => $event,
-            'data' => $data
-        ];
+        // manually format the data into the resource model
+        $model = new KlaviyoEventResourceModel([
+            'attributes' => [
+                'event_properties' => $data,
+                'timestamp' => time(),
+            ],
+            'metric' => new KlaviyoMetricResourceModel(['attributes' => ['name' => KlaviyoEventHelper::get_prefixed_event_name($event)]]),
+        ]);
 
         // create the event
         if (KlaviyoEventHelper::create(
@@ -53,10 +59,11 @@ class KlaviyoEventsCreatableRoute extends RestControllerRoute
             $user->user_email,
             $data
         )) {
-            return $this->send_single_record_response($responseData);
+            $this->add_response_data($model);
+            return $this->send_response();
         }
 
-        return new WP_Error('TFK0001', 'Could not create event', $responseData);
+        return new WP_Error('TFK0001', 'Could not create event', [$event, $data]);
     }
 
     /**

@@ -37,14 +37,6 @@ class KlaviyoEventResource extends RestResource
                 'type'         => 'string',
                 'readonly'     => true,
             ],
-            'email' => [
-                'description'  => esc_html__( 'Email address on the profile.', PluginConfig::get_plugin_text_domain()),
-                'type'         => 'string',
-            ],
-            'event' => [
-                'description'  => esc_html__( 'The event metric.', PluginConfig::get_plugin_text_domain()),
-                'type'         => 'string',
-            ],
             'data' => [
                 'description'  => esc_html__( 'The data attached to this event.', PluginConfig::get_plugin_text_domain()),
                 'type'         => 'array',
@@ -58,21 +50,5 @@ class KlaviyoEventResource extends RestResource
                 'type'         => 'string',
             ],
         ];
-    }
-
-    /**
-     * @param array $data
-     * @return array
-     */
-    public function format_response(array $data): array
-    {
-        return array_filter([
-            'id' => $data['id'] ?? null,
-            'email' => $data['email'] ?? null,
-            'event' => $data['event'] ?? null,
-            'data' => $data['data'] ?? null,
-            'timestamp' => $data['timestamp'] ?? null,
-            'metric' => $data['metric'] ?? null,
-        ]);
     }
 }

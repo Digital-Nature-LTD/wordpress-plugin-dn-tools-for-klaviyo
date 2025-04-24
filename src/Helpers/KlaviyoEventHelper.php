@@ -33,9 +33,6 @@ class KlaviyoEventHelper extends KlaviyoApiHelper
                 return false;
             }
 
-            $options = self::get_options();
-            $eventPrefixFieldValue = self::get_option_value($options, KlaviyoApiEventPrefixField::get_field_name());
-
             $client->Events->createEvent(
                 [
                     'data' => [
@@ -46,7 +43,7 @@ class KlaviyoEventHelper extends KlaviyoApiHelper
                                 'data' => [
                                     'type' => 'metric',
                                     'attributes' => [
-                                        'name' => ((empty($eventPrefixFieldValue) ? '' : "$eventPrefixFieldValue ") . $event)
+                                        'name' => self::get_prefixed_event_name($event),
                                     ],
                                 ]
                             ],
@@ -135,5 +132,17 @@ class KlaviyoEventHelper extends KlaviyoApiHelper
 
         var_dump($eventResponse);
         exit;
+    }
+
+    /**
+     * @param string $event
+     * @return string
+     */
+    public static function get_prefixed_event_name(string $event): string
+    {
+        $options = self::get_options();
+        $eventPrefixFieldValue = self::get_option_value($options, KlaviyoApiEventPrefixField::get_field_name());
+
+        return ((empty($eventPrefixFieldValue) ? '' : "$eventPrefixFieldValue ") . $event);
     }
 }

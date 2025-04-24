@@ -3,46 +3,26 @@
 namespace DigitalNature\ToolsForKlaviyo\Helpers;
 
 // Exit if accessed directly.
-use DigitalNature\ToolsForKlaviyo\Models\KlaviyoMetric;
-
 if (!defined('ABSPATH')) exit;
+
+use DigitalNature\ToolsForKlaviyo\Stores\KlaviyoMetricStore;
+use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Resource\Model\KlaviyoEventResourceModel;
+use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Resource\Model\KlaviyoMetricResourceModel;
 
 class KlaviyoMetricHelper
 {
     /**
-     * @param array $data
-     * @return KlaviyoMetric
+     * @param KlaviyoEventResourceModel $event
+     * @return KlaviyoMetricResourceModel|null
      */
-    public static function create(array $data): KlaviyoMetric
+    public static function get_metric_for_event(KlaviyoEventResourceModel $event): ?KlaviyoMetricResourceModel
     {
-        $metric = new KlaviyoMetric();
-
-        $metric->id = $data['id'] ?? null;
-        $metric->name = $data['attributes']['name'] ?? null;
-        $metric->created = $data['attributes']['created'] ?? null;
-        $metric->updated = $data['attributes']['updated'] ?? null;
-        $metric->integration = $data['attributes']['integration'] ?? null;
-
-        return $metric;
-    }
-
-    /**
-     * @param array $event
-     * @param KlaviyoMetric[] $metrics
-     * @return KlaviyoMetric|null
-     */
-    public static function get_metric_for_event(array $event, array $metrics): ?KlaviyoMetric
-    {
-        if (empty($event['relationships']) || empty($event['relationships']['metric'])) {
+        if (empty($event->relationships) || empty($event->relationships['metric'])) {
             return null;
         }
 
-        $metricId = $event['relationships']['metric']['data']['id'];
+        $metricId = $event->relationships['metric']['data']['id'];
 
-        if (!array_key_exists($metricId, $metrics)) {
-            return null;
-        }
-
-        return $metrics[$metricId];
+        return KlaviyoMetricStore::get_record($metricId);
     }
 }
