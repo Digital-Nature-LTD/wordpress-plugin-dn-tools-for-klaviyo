@@ -20,6 +20,7 @@ class Includes {
         // construct any admin classes here
         new \DigitalNature\ToolsForKlaviyo\Admin\Menu();
         new \DigitalNature\ToolsForKlaviyo\Admin\PluginActionLinks();
+        new \DigitalNature\ToolsForKlaviyo\Admin\Hooks\Options();
 
         // SHORTCODES
         // new \DigitalNature\ToolsForKlaviyo\Shortcodes\YourClass();

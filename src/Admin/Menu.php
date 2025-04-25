@@ -6,11 +6,9 @@ namespace DigitalNature\ToolsForKlaviyo\Admin;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 use DigitalNature\ToolsForKlaviyo\Config\Settings\KlaviyoApi\KlaviyoApiSetting;
-use DigitalNature\ToolsForKlaviyo\Config\PluginConfig;
 use DigitalNature\Utilities\Admin\Menu as DigitalNatureAdminMenu;
 use DigitalNature\ToolsForKlaviyo\Common\Users\Capabilities\DigitalNatureToolsForKlaviyoSettingsCapability;
 use DigitalNature\Utilities\Helpers\OptionHelper;
-use DigitalNature\WordPressUtilities\Helpers\TemplateHelper;
 
 class Menu
 {
@@ -43,6 +41,7 @@ class Menu
      */
     public function dn_tools_for_klaviyo_settings_view()
     {
+        // render the configuration first
         $setting = new KlaviyoApiSetting();
         OptionHelper::render_configuration_page($setting);
     }

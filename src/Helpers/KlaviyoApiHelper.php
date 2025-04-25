@@ -16,6 +16,22 @@ use KlaviyoAPI\KlaviyoAPI;
 class KlaviyoApiHelper
 {
     /**
+     * @return bool
+     */
+    public static function is_configured(): bool
+    {
+        $options = self::get_options();
+        $privateFieldValue = self::get_option_value($options, KlaviyoApiPrivateKeyField::get_field_name());
+        $publicFieldValue = self::get_option_value($options, KlaviyoApiPublicKeyField::get_field_name());
+
+        if (!self::api_keys_are_populated($privateFieldValue, $publicFieldValue)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * @return false|mixed|null
      */
     protected static function get_options()
@@ -63,14 +79,13 @@ class KlaviyoApiHelper
      */
     protected static function get_client(): ?KlaviyoAPI
     {
-        $options = self::get_options();
-        $privateFieldValue = self::get_option_value($options, KlaviyoApiPrivateKeyField::get_field_name());
-        $publicFieldValue = self::get_option_value($options, KlaviyoApiPublicKeyField::get_field_name());
-        $userAgentSuffixFieldValue = self::get_option_value($options, KlaviyoApiUserAgentSuffixField::get_field_name());
-
-        if (!self::api_keys_are_populated($privateFieldValue, $publicFieldValue)) {
+        if (!self::is_configured()) {
             return null;
         }
+
+        $options = self::get_options();
+        $privateFieldValue = self::get_option_value($options, KlaviyoApiPrivateKeyField::get_field_name());
+        $userAgentSuffixFieldValue = self::get_option_value($options, KlaviyoApiUserAgentSuffixField::get_field_name());
 
         return new KlaviyoAPI(
             $privateFieldValue,
