@@ -8,7 +8,6 @@ if (!defined('ABSPATH')) exit;
 use DigitalNature\ToolsForKlaviyo\Helpers\KlaviyoEventHelper;
 use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Arg\KlaviyoEventArg;
 use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Arg\KlaviyoEventDataArg;
-use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Resource\KlaviyoEventResource;
 use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Resource\Model\KlaviyoEventResourceModel;
 use DigitalNature\ToolsForKlaviyo\Wp\RestApi\v1\ToolsForKlaviyo\Resource\Model\KlaviyoMetricResourceModel;
 use DigitalNature\Utilities\Wp\RestApi\RestArg;
