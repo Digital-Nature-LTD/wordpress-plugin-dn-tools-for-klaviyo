@@ -27,7 +27,7 @@ class KlaviyoApiSetting extends Setting
      */
     public function get_setting_page_title(): string
     {
-        return 'Tools <em>for</em> Klaviyo Configuration';
+        return 'Tools <em>for</em> Klaviyo';
     }
 
     /**
