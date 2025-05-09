@@ -11,6 +11,7 @@ class TestKlaviyoEventCreate extends HTMLElement
         this.shadowRoot.innerHTML = `
             <div class="digital-nature-admin-wrap">
                 <link rel="stylesheet" href="` + this.dataset.stylesheet + `" media="all">
+                <label for="klaviyo-event-create-test-event-name">Event Name</label>
                 <input type="text" name="event-name" value="A test event" id="klaviyo-event-create-test-event-name" />
                 <button id="klaviyo-event-create-test-submit" type="submit">Test</button>
             </div>`
