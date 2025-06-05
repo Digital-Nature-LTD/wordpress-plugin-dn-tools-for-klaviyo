@@ -1,0 +1,23 @@
+{
+  "name": "digital-nature-tools-for-klaviyo",
+  "version": "1.0.0",
+  "description": "Digital Nature Tools for Klaviyo | WordPress plugin",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "watch": "vite build --watch --mode development",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "author": "Gareth Midwood <gareth@digital-nature.co.uk>",
+  "license": "ISC",
+  "devDependencies": {
+    "@digital-nature-ltd/web-component": "^1.0.3",
+    "fs": "^0.0.1-security",
+    "glob": "^11.0.2",
+    "path": "^0.12.7",
+    "vite": "^6.3.5",
+    "vite-plugin-imagemin": "^0.6.1",
+    "vite-plugin-static-copy": "^3.0.0"
+  }
+}
