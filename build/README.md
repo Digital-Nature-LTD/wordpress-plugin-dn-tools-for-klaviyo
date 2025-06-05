@@ -1,4 +1,4 @@
-# Digital Nature - Utilities Build
+# Digital Nature - Tools for Klaviyo Build
 This directory contains the source css/js/img files for the plugin.
 
 The build process gathers the input files (specified in `vite.config.js`) and outputs them
