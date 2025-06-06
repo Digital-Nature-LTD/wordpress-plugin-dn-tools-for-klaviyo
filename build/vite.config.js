@@ -1,32 +1,12 @@
 import { defineConfig } from 'vite'
 import * as globModule from 'glob';
 import path from 'path';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
 import viteImagemin from 'vite-plugin-imagemin';
 
 const outputDir = path.resolve(__dirname, '../dn-tools-for-klaviyo/assets');
 
 export default defineConfig({
     plugins: [
-        // viteStaticCopy({
-        //     targets: [
-        //         {
-        //             src: 'assets/admin/img/*.{png,jpg,jpeg,gif,svg,webp,avif}',
-        //             dest: 'admin/img',
-        //             flatten: false
-        //         },
-        //         {
-        //             src: 'assets/common/img/*.{png,jpg,jpeg,gif,svg,webp,avif}',
-        //             dest: 'common/img',
-        //             flatten: false
-        //         },
-        //         {
-        //             src: 'assets/frontend/img/*.{png,jpg,jpeg,gif,svg,webp,avif}',
-        //             dest: 'frontend/img',
-        //             flatten: false
-        //         },
-        //     ]
-        // }),
         viteImagemin({
             gifsicle: { optimizationLevel: 7 },
             optipng: { optimizationLevel: 7 },
@@ -67,9 +47,10 @@ export default defineConfig({
                 },
             },
         },
+        assetsInlineLimit: Infinity, // inline css images
         sourcemap: 'inline',
         minify: true,
         outDir: outputDir,
-        emptyOutDir: true, // plugin handles cleaning!
+        emptyOutDir: true,
     },
 });

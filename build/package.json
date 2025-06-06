@@ -12,7 +12,9 @@
   "author": "Gareth Midwood <gareth@digital-nature.co.uk>",
   "license": "ISC",
   "devDependencies": {
-    "@digital-nature-ltd/web-component": "^1.0.3",
+    "@digital-nature-ltd/dismissable-message-component": "^0.0.10",
+    "@digital-nature-ltd/loading-overlay-component": "^1.0.6",
+    "@digital-nature-ltd/web-component": "^1.0.5",
     "fs": "^0.0.1-security",
     "glob": "^11.0.2",
     "path": "^0.12.7",

@@ -17,6 +17,9 @@ class Includes
      */
     function __construct()
     {
+	    add_action('admin_enqueue_scripts', [$this, 'enqueue_common_scripts_and_styles'], 20);
+	    add_action('wp_enqueue_scripts', [$this, 'enqueue_common_scripts_and_styles'], 20 );
+
         // Add role(s)
         DigitalNatureToolsForKlaviyoManagerRole::add_role();
 
@@ -30,6 +33,15 @@ class Includes
         add_action('init', [$this, 'create_instances_late_loading']);
         add_action('admin_init', [$this, 'create_instances_late_loading']);
     }
+
+	/**
+	 * @return void
+	 */
+	public function enqueue_common_scripts_and_styles()
+	{
+		// enqueue WP API script so we can make REST API calls
+		wp_enqueue_script('wp-api');
+	}
 
     /**
      * Here, create 'new' instances of all config classes that require other classes (e.g. the
