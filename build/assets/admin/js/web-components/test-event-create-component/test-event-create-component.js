@@ -50,12 +50,12 @@ class TestKlaviyoEventCreate extends DigitalNatureWebComponent
             }
         );
 
-        console.log('Response is', response);
-
         loadingMessages.forEach(message => loadingOverlay.deleteMessage(message));
 
-        let responseMessage = DigitalNatureDismissableMessageComponent.create();
-        responseMessage.setSlotTextContent('message', 'Success! Your event was sent to Klaviyo!');
+        let responseMessage = DigitalNatureDismissableMessageComponent.create({
+            'message': 'Success! Your event was sent to Klaviyo!',
+            'classes': ['success']
+        });
         this.shadowRoot.appendChild(responseMessage);
     }
 }
