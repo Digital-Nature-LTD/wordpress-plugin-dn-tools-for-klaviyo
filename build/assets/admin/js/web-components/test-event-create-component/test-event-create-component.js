@@ -10,6 +10,7 @@ class TestKlaviyoEventCreate extends DigitalNatureWebComponent
     static observedAttributes = ['event-name'];
 
     constructor() {
+
         super({
             template: template,
         });
@@ -23,6 +24,14 @@ class TestKlaviyoEventCreate extends DigitalNatureWebComponent
             this.setAttribute('event-name', eventNameInput.value);
             this.runTest().then(r => {});
         })
+    }
+
+    getAdoptedStyles() {
+        return [
+            "/wp-content/plugins/dn-utilities/assets/admin/css/admin.css",
+            "/wp-content/plugins/dn-utilities/assets/common/css/common.css",
+            "/wp-content/plugins/dn-tools-for-klaviyo/assets/admin/css/admin.css"
+        ];
     }
 
     async runTest()
