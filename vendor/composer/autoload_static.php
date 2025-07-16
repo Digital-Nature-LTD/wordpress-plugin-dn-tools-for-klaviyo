@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit9af9c41841f1bfb83b87e67604c581d3
+class ComposerStaticInitcf30a3a8a11f4a527b20f9cb6237b29d
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -62,7 +62,7 @@ class ComposerStaticInit9af9c41841f1bfb83b87e67604c581d3
         ),
         'DigitalNature\\ToolsForKlaviyo\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src',
+            0 => __DIR__ . '/../..' . '/core/src',
         ),
     );
 
@@ -73,9 +73,9 @@ class ComposerStaticInit9af9c41841f1bfb83b87e67604c581d3
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit9af9c41841f1bfb83b87e67604c581d3::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit9af9c41841f1bfb83b87e67604c581d3::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit9af9c41841f1bfb83b87e67604c581d3::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitcf30a3a8a11f4a527b20f9cb6237b29d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitcf30a3a8a11f4a527b20f9cb6237b29d::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitcf30a3a8a11f4a527b20f9cb6237b29d::$classMap;
 
         }, null, ClassLoader::class);
     }

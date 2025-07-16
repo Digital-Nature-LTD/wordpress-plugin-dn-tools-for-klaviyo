@@ -3,7 +3,7 @@
         'name' => 'digital-nature/tools-for-klaviyo',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '88754f01642523c052815423a2237d8753b15830',
+        'reference' => 'c8b3ea0b45d361dc032725fe460abefcb0827194',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'digital-nature/tools-for-klaviyo' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '88754f01642523c052815423a2237d8753b15830',
+            'reference' => 'c8b3ea0b45d361dc032725fe460abefcb0827194',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -5,7 +5,7 @@
     "license": "GPL-3.0-or-later",
     "autoload": {
         "psr-4": {
-            "DigitalNature\\ToolsForKlaviyo\\": "src/"
+            "DigitalNature\\ToolsForKlaviyo\\": "core/src/"
         }
     },
     "authors": [
@@ -16,5 +16,8 @@
     ],
     "require": {
         "klaviyo/api": "^13.0"
+    },
+    "archive": {
+        "exclude": ["/build", "/vendor"]
     }
 }
